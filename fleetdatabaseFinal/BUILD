@@ -1,0 +1,45 @@
+python_sources(
+    overrides={
+        "manage.py":{
+            "run_goal_use_sandbox":False,
+            #"restartable":True,
+        },
+    },
+)
+
+pex_binary(
+    name="django-admin",
+    dependencies=[
+        "3rdparty:reqs#Django",
+    ],
+    script="django-admin",
+)
+
+pex_binary(
+    name="manage",
+    entry_point="manage.py",
+    dependencies=[
+        "fleetdatabaseFinal:fleetdatabaseFinal",
+        "accounts:accounts",
+        "3rdparty:reqs#psycopg2-binary",
+        "3rdparty:reqs#gunicorn",
+        "3rdparty:reqs#djangorestframework",
+        "3rdparty:reqs#djangorestframework-simplejwt",
+    ],
+    restartable=True,
+    inherit_path="prefer",
+)
+
+pex_binary(
+    name="production",
+    dependencies=[
+        "fleetdatabaseFinal:fleetdatabaseFinal",
+        "accounts:accounts",
+        "3rdparty:reqs#psycopg2-binary",
+        "3rdparty:reqs#gunicorn",
+        "3rdparty:reqs#python-dotenv",
+    ],
+    script="gunicorn",
+    restartable=True,
+    inherit_path="prefer",
+)

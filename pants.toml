@@ -1,0 +1,40 @@
+[GLOBAL]
+pants_version = "2.14.0"
+backend_packages = [
+  "pants.backend.docker",
+  "pants.backend.python",
+  "pants.backend.python.lint.flake8",
+  "pants.backend.python.lint.isort",
+  "pants.backend.python.lint.black",
+]
+
+[python-infer]
+string_imports = true
+
+[source]
+# The Python source root is the repo root. See https://www.pantsbuild.org/docs/source-roots.
+root_patterns = ["/"]
+
+[python]
+# The default interpreter compatibility for code in this repo. Individual targets can override
+#  this with the `compatibility` field. See
+#  https://www.pantsbuild.org/docs/python-interpreter-compatibility.
+interpreter_constraints = [">=3.9,<3.10"]
+
+[python-bootstrap]
+# We search for interpreters on both on the $PATH and in the `$(pyenv root)/versions` folder.
+# Note the gotcha that the order of entries does not matter in this option, as Pants will consider
+# all interpreters it finds and select a compatible one.
+# So, if you're using macOS, you may want to leave off the <PATH> entry to avoid using the
+# problematic system Pythons. See
+# https://www.pantsbuild.org/docs/python-interpreter-compatibility#changing-the-interpreter-search-path.
+search_path = ["<PATH>", "<PYENV>"]
+
+[anonymous-telemetry]
+enabled = true
+repo_id = "063876f8-2bfb-4dc2-b47a-54ed5eccbb60"
+
+[flake8]
+args=[
+  "--max-line-length=120"
+]
